@@ -28,7 +28,7 @@ Use this roadmap to track milestone-level delivery through checklist sections.
 Use this section as a concise rollup of milestone names and statuses, not as a second task list.
 
 - Milestone 0: Foundation - Completed
-- Milestone 1: Server Shape - In Progress
+- Milestone 1: Server Shape - Completed
 - Milestone 2: Provider Resolution - Planned
 
 ## Milestone 0: Foundation
@@ -60,14 +60,14 @@ Completed
 
 ### Status
 
-In Progress
+Completed
 
 ### Scope
 
 - [x] Define the first public listening API responsibilities and keep route ownership explicit.
 - [x] Capture the schedule-authority model in a durable planning doc.
 - [x] Add static JSON endpoints for manifest, current schedule, show metadata, and break metadata.
-- [ ] Keep configuration hard-coded for local development until the route contract settles.
+- [x] Keep configuration hard-coded for local development while the first route contract settles.
 
 ### Tickets
 
@@ -75,6 +75,7 @@ In Progress
 - [x] Split app bootstrap from route registration.
 - [x] Add Codable response models for the initial public contract.
 - [x] Add request/response tests for public JSON routes.
+- [x] Make schedule-window queries parse explicit ISO 8601 `from` and `to` values.
 
 ### Exit Criteria
 

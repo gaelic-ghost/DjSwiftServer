@@ -84,7 +84,7 @@ Fields:
 - `albumTitle`
 - `durationSeconds`
 - `isExplicit`
-- `providerIDs`
+- `providerReferences`
 
 Apple-first provider fields:
 
@@ -141,7 +141,7 @@ GET /v1/breaks/{breakID}
 GET /v1/health
 ```
 
-The branch skeleton implements static JSON responses for these routes so the client contract can settle before storage, publication tools, or provider lookup are added.
+The first implementation pass keeps responses static, but `/v1/schedule` now treats `from` and `to` as required ISO 8601 UTC timestamps. The `from` value is inclusive, `to` is exclusive, and a valid empty window returns `200 OK` with an empty `segments` array.
 
 ## Client Access Pattern
 
