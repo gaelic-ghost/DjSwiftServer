@@ -9,6 +9,7 @@ Swift Hummingbird server package for the DJ workspace.
 - [Usage](#usage)
 - [Development](#development)
 - [Repo Structure](#repo-structure)
+- [Planning Docs](#planning-docs)
 - [Release Notes](#release-notes)
 - [License](#license)
 
@@ -20,11 +21,11 @@ This project is just starting out with a validated Hummingbird server baseline.
 
 ### What This Project Is
 
-DjSwiftServer is a macOS 15+ Swift Package Manager executable that runs a small Hummingbird HTTP server. The current server listens on `127.0.0.1:8080`, exposes `/` for a startup response, and exposes `/health` for a simple health check.
+DjSwiftServer is a macOS 15+ Swift Package Manager executable that runs a Hummingbird HTTP server for an internet radio platform. The server publishes station metadata, schedules, show metadata, provider identifiers, and voice break metadata so listener apps can play scheduled music through the listener's own Apple Music account and interleave server-hosted breaks.
 
 ### Motivation
 
-This repo exists to give the DJ workspace a Swift-native server surface that can grow from a small, testable Hummingbird foundation instead of starting from an unstructured executable stub.
+This repo exists to give the DJ workspace a Swift-native schedule authority. It should coordinate what plays and when without acting as an Apple Music streaming proxy or receiving listener account credentials.
 
 ## Quick Start
 
@@ -37,15 +38,23 @@ Then check the server from another terminal:
 ```bash
 curl http://127.0.0.1:8080/
 curl -i http://127.0.0.1:8080/health
+curl http://127.0.0.1:8080/v1/manifest
+curl http://127.0.0.1:8080/v1/schedule/current
 ```
 
 ## Usage
 
-The executable starts a local Hummingbird application on `127.0.0.1:8080`.
+The executable starts a local Hummingbird application on `127.0.0.1:8080`. Public listener data lives under `/v1`.
 
 ```text
-GET /        -> DjSwiftServer is running.
-GET /health  -> HTTP 200 OK
+GET /                     -> DjSwiftServer is running.
+GET /health               -> HTTP 200 OK
+GET /v1/health            -> JSON health payload
+GET /v1/manifest          -> station manifest
+GET /v1/schedule/current  -> current schedule window
+GET /v1/schedule          -> schedule window placeholder
+GET /v1/shows/{showID}    -> show metadata
+GET /v1/breaks/{breakID}  -> voice break metadata
 ```
 
 ## Development
@@ -75,6 +84,7 @@ scripts/repo-maintenance/validate-all.sh
 ```text
 .
 |-- Package.swift
+|-- docs/
 |-- Sources/
 |   `-- DjSwiftServer/
 |-- Tests/
@@ -85,6 +95,10 @@ scripts/repo-maintenance/validate-all.sh
 |-- README.md
 `-- ROADMAP.md
 ```
+
+## Planning Docs
+
+- [Initial Data Model and API Plan](docs/initial-data-model-and-api-plan.md)
 
 ## Release Notes
 

@@ -9,6 +9,7 @@ Use this roadmap to track milestone-level delivery through checklist sections.
 - [Milestone Progress](#milestone-progress)
 - [Milestone 0: Foundation](#milestone-0-foundation)
 - [Milestone 1: Server Shape](#milestone-1-server-shape)
+- [Milestone 2: Provider Resolution](#milestone-2-provider-resolution)
 - [Backlog Candidates](#backlog-candidates)
 - [History](#history)
 
@@ -27,7 +28,8 @@ Use this roadmap to track milestone-level delivery through checklist sections.
 Use this section as a concise rollup of milestone names and statuses, not as a second task list.
 
 - Milestone 0: Foundation - Completed
-- Milestone 1: Server Shape - Planned
+- Milestone 1: Server Shape - In Progress
+- Milestone 2: Provider Resolution - Planned
 
 ## Milestone 0: Foundation
 
@@ -58,33 +60,61 @@ Completed
 
 ### Status
 
+In Progress
+
+### Scope
+
+- [x] Define the first public listening API responsibilities and keep route ownership explicit.
+- [x] Capture the schedule-authority model in a durable planning doc.
+- [x] Add static JSON endpoints for manifest, current schedule, show metadata, and break metadata.
+- [ ] Keep configuration hard-coded for local development until the route contract settles.
+
+### Tickets
+
+- [x] Add `docs/initial-data-model-and-api-plan.md`.
+- [x] Split app bootstrap from route registration.
+- [x] Add Codable response models for the initial public contract.
+- [x] Add request/response tests for public JSON routes.
+
+### Exit Criteria
+
+- [x] The server exposes the first read-only listener API under `/v1`.
+- [x] Public response models are covered by Swift Testing route tests.
+- [x] README, roadmap, and planning docs match the implemented behavior.
+
+## Milestone 2: Provider Resolution
+
+### Status
+
 Planned
 
 ### Scope
 
-- [ ] Define the first real DJ-facing API responsibilities and keep route ownership explicit.
-- [ ] Decide whether configuration stays hard-coded for local development or moves into a typed config source.
-- [ ] Add logging that makes startup, bind address, and request failures clear to an operator.
+- [ ] Add Apple Music catalog resolution rules without handling listener Music User Tokens on the server.
+- [ ] Preserve provider-neutral schedule data while making Apple Music IDs first-class provider references.
+- [ ] Prepare the same provider-reference shape for Spotify IDs or URIs later.
 
 ### Tickets
 
-- [ ] Replace placeholder root behavior with the first real endpoint set.
-- [ ] Add configuration notes once the bind address or port becomes user-controlled.
-- [ ] Add error-path tests for the first route that can fail.
+- [ ] Decide whether provider resolution data is authored manually, imported from playlists, or reconciled through a server-side catalog job.
+- [ ] Add storefront and ISRC fallback behavior to the model once real catalog data is available.
+- [ ] Document client-side MusicKit responsibilities in the future app repo when that repo exists.
 
 ### Exit Criteria
 
-- [ ] The server has a documented first real use case beyond health checks.
-- [ ] New route behavior has Swift Testing coverage.
-- [ ] Operator-facing messages and docs match the implemented behavior.
+- [ ] Scheduled tracks carry enough provider data for the listener app to resolve Apple Music playback.
+- [ ] Server docs clearly state that listener account authorization remains client-owned.
+- [ ] The model can add Spotify provider references without changing segment identity.
 
 ## Backlog Candidates
 
 - [ ] Add structured logging once startup and request diagnostics need more than Hummingbird defaults.
 - [ ] Add OpenAPI documentation if the endpoint surface grows beyond a handful of routes.
 - [ ] Add release automation notes before the first tag.
+- [ ] Consider Server-Sent Events or WebSockets if live schedule corrections need faster delivery than polling.
 
 ## History
 
 - Initial roadmap scaffold created.
 - 2026-04-24: Bootstrapped the Swift 6 Hummingbird server foundation for macOS 15+.
+- 2026-04-24: Captured the initial internet-radio data model and public API plan.
