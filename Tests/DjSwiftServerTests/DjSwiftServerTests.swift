@@ -73,6 +73,28 @@ import Testing
     }
 }
 
+@Test func `current schedule route exposes Apple Music storefront and ISRC fallback references`() async throws {
+    let app = Application(responder: makeRouter().buildResponder())
+
+    try await app.test(.router) { client in
+        try await client.execute(uri: "/v1/schedule/current", method: .get) { response in
+            let schedule = try decode(ScheduleResponse.self, from: response)
+            let track = try #require(schedule.segments[1].track)
+            let appleMusic = try #require(track.providerReferences.first { $0.provider == .appleMusic })
+            let spotify = try #require(track.providerReferences.first { $0.provider == .spotify })
+
+            #expect(response.status == .ok)
+            #expect(appleMusic.catalogID == "666284200")
+            #expect(appleMusic.storefront == "us")
+            #expect(appleMusic.isrc == "FRS631100012")
+            #expect(appleMusic.availability == .resolved)
+            #expect(spotify.uri == nil)
+            #expect(spotify.isrc == "FRS631100012")
+            #expect(spotify.availability == .needsStorefrontResolution)
+        }
+    }
+}
+
 @Test func `schedule window route returns overlapping segments`() async throws {
     let app = Application(responder: makeRouter().buildResponder())
 

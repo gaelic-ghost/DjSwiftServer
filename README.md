@@ -21,7 +21,7 @@ This project is just starting out with a validated Hummingbird server baseline.
 
 ### What This Project Is
 
-DjSwiftServer is a macOS 15+ Swift Package Manager executable that runs a Hummingbird HTTP server for an internet radio platform. The server publishes station metadata, schedules, show metadata, provider identifiers, and voice break metadata so listener apps can play scheduled music through the listener's own Apple Music account and interleave server-hosted breaks.
+DjSwiftServer is a macOS 15+ Swift Package Manager executable that runs a Hummingbird HTTP server for an internet radio platform. The server publishes station metadata, schedules, show metadata, provider references, and voice break metadata so listener apps can play scheduled music through the listener's own Apple Music account and interleave server-hosted breaks.
 
 ### Motivation
 
