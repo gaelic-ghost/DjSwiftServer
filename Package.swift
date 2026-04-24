@@ -18,12 +18,12 @@ let package = Package(
             name: "DjSwiftServer",
             dependencies: [
                 .product(name: "Hummingbird", package: "hummingbird"),
-            ]
+            ],
         ),
         .testTarget(
             name: "DjSwiftServerTests",
-            dependencies: ["DjSwiftServer", .product(name: "HummingbirdTesting", package: "hummingbird")]
+            dependencies: ["DjSwiftServer", .product(name: "HummingbirdTesting", package: "hummingbird")],
         ),
     ],
-    swiftLanguageModes: [.v6]
+    swiftLanguageModes: [.v6],
 )
