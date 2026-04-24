@@ -52,7 +52,7 @@ GET /health               -> HTTP 200 OK
 GET /v1/health            -> JSON health payload
 GET /v1/manifest          -> station manifest
 GET /v1/schedule/current  -> current schedule window
-GET /v1/schedule          -> schedule window placeholder
+GET /v1/schedule          -> schedule window filtered by ISO 8601 `from` and `to` query values
 GET /v1/shows/{showID}    -> show metadata
 GET /v1/breaks/{breakID}  -> voice break metadata
 ```

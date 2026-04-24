@@ -1,3 +1,4 @@
+import Foundation
 import Hummingbird
 
 func registerPublicRoutes(on router: Router<BasicRequestContext>, catalog: RadioCatalog) {
@@ -13,8 +14,9 @@ func registerPublicRoutes(on router: Router<BasicRequestContext>, catalog: Radio
         catalog.currentSchedule()
     }
 
-    router.get("/v1/schedule") { _, _ -> ScheduleResponse in
-        catalog.currentSchedule()
+    router.get("/v1/schedule") { request, _ -> ScheduleResponse in
+        let window = try ScheduleWindow(request: request)
+        return catalog.schedule(window)
     }
 
     router.get("/v1/shows/:showID") { _, context -> ShowMetadata in
@@ -33,5 +35,39 @@ func registerPublicRoutes(on router: Router<BasicRequestContext>, catalog: Radio
         }
 
         return voiceBreak
+    }
+}
+
+private extension ScheduleWindow {
+    init(request: Request) throws {
+        let from = try Self.requiredDate(named: "from", in: request)
+        let to = try Self.requiredDate(named: "to", in: request)
+        guard to > from else {
+            throw HTTPError(
+                .badRequest,
+                message: "Schedule window query parameter 'to' must be later than 'from'.",
+            )
+        }
+
+        self.init(from: from, to: to)
+    }
+
+    static func requiredDate(named name: String, in request: Request) throws -> Date {
+        guard let value = request.uri.queryParameters[name[...]] else {
+            throw HTTPError(
+                .badRequest,
+                message: "Schedule window requires ISO 8601 query parameter '\(name)'.",
+            )
+        }
+
+        let dateString = String(value)
+        guard dateString.hasSuffix("Z"), let date = ISO8601DateFormatter().date(from: dateString) else {
+            throw HTTPError(
+                .badRequest,
+                message: "Schedule window query parameter '\(name)' must be an ISO 8601 UTC timestamp, such as 2026-04-24T16:00:00Z.",
+            )
+        }
+
+        return date
     }
 }
