@@ -29,7 +29,7 @@ Use this section as a concise rollup of milestone names and statuses, not as a s
 
 - Milestone 0: Foundation - Completed
 - Milestone 1: Server Shape - Completed
-- Milestone 2: Provider Resolution - Planned
+- Milestone 2: Provider Resolution - In Progress
 
 ## Milestone 0: Foundation
 
@@ -87,25 +87,25 @@ Completed
 
 ### Status
 
-Planned
+In Progress
 
 ### Scope
 
 - [ ] Add Apple Music catalog resolution rules without handling listener Music User Tokens on the server.
-- [ ] Preserve provider-neutral schedule data while making Apple Music IDs first-class provider references.
-- [ ] Prepare the same provider-reference shape for Spotify IDs or URIs later.
+- [x] Preserve provider-neutral schedule data while making Apple Music IDs first-class provider references.
+- [x] Prepare the same provider-reference shape for Spotify IDs or URIs later.
 
 ### Tickets
 
-- [ ] Decide whether provider resolution data is authored manually, imported from playlists, or reconciled through a server-side catalog job.
-- [ ] Add storefront and ISRC fallback behavior to the model once real catalog data is available.
+- [x] Decide whether provider resolution data is authored manually, imported from playlists, or reconciled through a server-side catalog job.
+- [x] Add storefront and ISRC fallback behavior to the sample provider-reference model.
 - [ ] Document client-side MusicKit responsibilities in the future app repo when that repo exists.
 
 ### Exit Criteria
 
-- [ ] Scheduled tracks carry enough provider data for the listener app to resolve Apple Music playback.
-- [ ] Server docs clearly state that listener account authorization remains client-owned.
-- [ ] The model can add Spotify provider references without changing segment identity.
+- [x] Scheduled tracks carry enough provider data for the listener app to resolve Apple Music playback.
+- [x] Server docs clearly state that listener account authorization remains client-owned.
+- [x] The model can add Spotify provider references without changing segment identity.
 
 ## Backlog Candidates
 
@@ -119,3 +119,4 @@ Planned
 - Initial roadmap scaffold created.
 - 2026-04-24: Bootstrapped the Swift 6 Hummingbird server foundation for macOS 15+.
 - 2026-04-24: Captured the initial internet-radio data model and public API plan.
+- 2026-04-24: Started provider-resolution scope with manual provider references, Apple Music storefront data, and ISRC fallback coverage.

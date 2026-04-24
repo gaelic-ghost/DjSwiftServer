@@ -86,10 +86,10 @@ struct TrackSegment: Codable, Equatable {
     var albumTitle: String
     var durationSeconds: Int
     var isExplicit: Bool
-    var providerReferences: [ProviderResolution]
+    var providerReferences: [ProviderReference]
 }
 
-struct ProviderResolution: Codable, Equatable {
+struct ProviderReference: Codable, Equatable {
     var provider: ProviderKind
     var catalogID: String?
     var storefront: String?

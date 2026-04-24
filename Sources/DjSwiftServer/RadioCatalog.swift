@@ -80,7 +80,7 @@ extension RadioCatalog {
                         durationSeconds: 214,
                         isExplicit: false,
                         providerReferences: [
-                            ProviderResolution(
+                            ProviderReference(
                                 provider: .appleMusic,
                                 catalogID: "666284200",
                                 storefront: "us",
@@ -88,7 +88,7 @@ extension RadioCatalog {
                                 uri: nil,
                                 availability: .resolved,
                             ),
-                            ProviderResolution(
+                            ProviderReference(
                                 provider: .spotify,
                                 catalogID: nil,
                                 storefront: nil,

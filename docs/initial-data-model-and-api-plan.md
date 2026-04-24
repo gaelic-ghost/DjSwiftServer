@@ -1,6 +1,6 @@
 # Initial Data Model and API Plan
 
-DjSwiftServer is the schedule authority for an internet radio platform. It does not stream Apple Music or hold listener account credentials. The server publishes station metadata, schedule timing, show metadata, provider identifiers, and break audio metadata; the listener app resolves and plays music through the listener's own Apple Music account with MusicKit.
+DjSwiftServer is the schedule authority for an internet radio platform. It does not stream Apple Music or hold listener account credentials. The server publishes station metadata, schedule timing, show metadata, provider references, and break audio metadata; the listener app resolves and plays music through the listener's own Apple Music account with MusicKit.
 
 Apple's MusicKit model matters for the server shape. `ApplicationMusicPlayer` lets the client app play music for itself without taking over Music.app state, and its queue is built from playable music items. Apple Music API catalog data is storefront-specific, while user-library and user-specific requests require a Music User Token. On Apple platforms, MusicKit manages that token for the app. Because of that, DjSwiftServer should publish provider references and timing intent, while the client owns authorization, storefront resolution, queue construction, playback, and drift recovery.
 
@@ -21,7 +21,7 @@ Later authenticated admin APIs can publish schedules, manage shows, upload recor
 
 - Model the schedule as provider-neutral timing intent.
 - Treat Apple Music as the first provider resolution, not as the identity of the scheduled track.
-- Keep provider IDs beside canonical track metadata so Spotify can be added later without reshaping the schedule.
+- Keep provider references beside canonical track metadata so Spotify can be added later without reshaping the schedule.
 - Include `serverTime`, `generatedAt`, `validUntil`, and `revision` on schedule-like responses so clients can detect drift and stale data.
 - Give every playable segment a stable `id`, `sequence`, `startsAt`, `durationSeconds`, and `driftPolicy`.
 - Do not send listener-specific tokens, Apple Music user tokens, or private account data through DjSwiftServer.
@@ -86,6 +86,12 @@ Fields:
 - `isExplicit`
 - `providerReferences`
 
+### Provider Reference
+
+A provider reference is a resolution hint, not the track identity. The schedule segment remains provider-neutral, while each reference tells a client how to find the same track inside a specific provider catalog.
+
+For the current contract-first pass, provider data is authored manually in the sample catalog. DjSwiftServer does not call the Apple Music API, does not store an Apple developer token, does not request listener Music User Tokens, and does not run a background catalog reconciliation job.
+
 Apple-first provider fields:
 
 - `provider`
@@ -94,7 +100,13 @@ Apple-first provider fields:
 - `isrc`
 - `availability`
 
-Spotify can later add a `spotify` provider entry with a Spotify ID or URI beside the Apple Music entry.
+For Apple Music, `catalogID` is valid for the listed `storefront`, and `isrc` is the cross-storefront fallback clients can use when the listener's storefront differs from the authored catalog ID. For Spotify, `uri` can later carry a Spotify URI or ID without changing segment identity.
+
+The first availability meanings are:
+
+- `resolved`: the provider reference is ready for a client to try directly.
+- `needsStorefrontResolution`: the reference has enough fallback data, usually `isrc`, for the client or a future catalog job to resolve the provider-specific ID.
+- `unavailable`: the provider is known but currently has no usable reference for this track.
 
 ### Voice Break Segment
 
@@ -149,7 +161,7 @@ At launch:
 
 - Fetch `/v1/manifest`.
 - Fetch `/v1/schedule/current`.
-- Resolve the current and next few track provider IDs with MusicKit.
+- Resolve the current and next few track provider references with MusicKit.
 - Prefetch the next few voice breaks.
 
 During playback:
@@ -172,7 +184,7 @@ Admin APIs should be authenticated from the beginning and should not share routi
 ## First Implementation Pass
 
 - Split app bootstrap from route registration.
-- Add Codable response models for manifest, schedule, shows, tracks, provider IDs, and breaks.
+- Add Codable response models for manifest, schedule, shows, tracks, provider references, and breaks.
 - Add deterministic sample catalog data.
 - Implement static JSON endpoints for the public listener API.
 - Add tests for status codes and JSON response shapes.
