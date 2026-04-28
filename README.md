@@ -5,6 +5,7 @@ Swift Hummingbird server package for the DJ workspace.
 ## Table of Contents
 
 - [Overview](#overview)
+- [Long-Term Direction](#long-term-direction)
 - [Quick Start](#quick-start)
 - [Usage](#usage)
 - [Development](#development)
@@ -26,6 +27,16 @@ DjSwiftServer is a macOS 15+ Swift Package Manager executable that runs a Hummin
 ### Motivation
 
 This repo exists to give the DJ workspace a Swift-native schedule authority. It should coordinate what plays and when without acting as an Apple Music streaming proxy or receiving listener account credentials.
+
+## Long-Term Direction
+
+DjSwiftServer should become a self-hostable personal radio station server that someone can run on their own Mac. The Mac app or command-line package should own the station database, publish schedules and manifests, serve voice breaks, and expose clear operator controls without requiring a hosted SaaS account.
+
+The public listener API should support both local-only testing and open-internet access. Local operators should be able to run the server on their Mac and optionally publish it through a gateway such as [Cloudflare Tunnel](https://developers.cloudflare.com/tunnel/) so listener apps can fetch manifests, schedules, and audio metadata from a stable HTTPS URL. A hosted server deployment path should remain possible for users who want their station running away from their personal machine.
+
+The project should also grow an MCP surface for station operation. That surface should let tools such as ChatGPT or Codex inspect station state, draft schedules, prepare playlist imports, validate provider references, manage voice-break metadata, and publish schedule revisions through explicit user-approved actions.
+
+Future distribution should include a [Codex plugin](https://developers.openai.com/codex/plugins/build) and/or [ChatGPT App](https://developers.openai.com/apps-sdk/) packaging path. The plugin/app should bundle setup guidance, MCP configuration, and app metadata so users can connect their personal station to AI tools. The goal is for users to combine this server with music-service integrations where available, create or refine playlists with assistance, and publish those playlists into their personal internet radio station.
 
 ## Quick Start
 
@@ -56,6 +67,8 @@ GET /v1/schedule          -> schedule window filtered by ISO 8601 `from` and `to
 GET /v1/shows/{showID}    -> show metadata
 GET /v1/breaks/{breakID}  -> voice break metadata
 ```
+
+The current executable is still a local development server. It does not yet configure persistent storage, an MCP endpoint, tunneling, hosted deployment, or plugin/app packaging.
 
 ## Development
 
