@@ -19,6 +19,9 @@ let package = Package(
             dependencies: [
                 .product(name: "Hummingbird", package: "hummingbird"),
             ],
+            resources: [
+                .process("Resources"),
+            ],
         ),
         .testTarget(
             name: "DjSwiftServerTests",

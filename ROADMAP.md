@@ -31,7 +31,7 @@ Use this section as a concise rollup of milestone names and statuses, not as a s
 - Milestone 0: Foundation - Completed
 - Milestone 1: Server Shape - Completed
 - Milestone 2: Provider Resolution - In Progress
-- Milestone 3: Authored Catalog - Planned
+- Milestone 3: Authored Catalog - Completed
 
 ## Milestone 0: Foundation
 
@@ -113,29 +113,29 @@ In Progress
 
 ### Status
 
-Planned
+Completed
 
 ### Scope
 
-- [ ] Move hard-coded sample data into a bundled authored catalog resource.
-- [ ] Add source-of-truth record types that are separate from public response models.
-- [ ] Add validation for catalog IDs, references, schedule windows, segment timing, provider references, and voice-break media metadata.
-- [ ] Add explicit projection from authored records to listener API responses.
+- [x] Move hard-coded sample data into a bundled authored catalog resource.
+- [x] Add source-of-truth record types that are separate from public response models.
+- [x] Add validation for catalog IDs, references, schedule windows, segment timing, provider references, and voice-break media metadata.
+- [x] Add explicit projection from authored records to listener API responses.
 
 ### Tickets
 
 - [x] Add `docs/full-data-model-plan.md`.
-- [ ] Add a bundled catalog fixture.
-- [ ] Add catalog record types and loader.
-- [ ] Add validation errors that name the record type, record ID, field, and likely fix.
-- [ ] Add projection tests from catalog records to public responses.
+- [x] Add a bundled catalog fixture.
+- [x] Add catalog record types and loader.
+- [x] Add validation errors that name the record type, record ID, field, and likely fix.
+- [x] Add projection tests from catalog records to public responses.
 
 ### Exit Criteria
 
-- [ ] `RadioCatalog` loads from an authored resource instead of constructing sample data directly in Swift.
-- [ ] Invalid catalog fixtures fail with descriptive operator-facing errors.
-- [ ] Public route behavior remains covered by Swift Testing tests.
-- [ ] README, roadmap, and planning docs clearly distinguish source-of-truth records from public response models.
+- [x] `RadioCatalog` loads from an authored resource instead of constructing sample data directly in Swift.
+- [x] Invalid catalog fixtures fail with descriptive operator-facing errors.
+- [x] Public route behavior remains covered by Swift Testing tests.
+- [x] README, roadmap, and planning docs clearly distinguish source-of-truth records from public response models.
 
 ## Backlog Candidates
 
@@ -151,3 +151,4 @@ Planned
 - 2026-04-24: Captured the initial internet-radio data model and public API plan.
 - 2026-04-24: Started provider-resolution scope with manual provider references, Apple Music storefront data, and ISRC fallback coverage.
 - 2026-04-28: Planned the full authored catalog, validation, and projection model.
+- 2026-04-28: Added a bundled authored catalog resource, validation, and explicit public response projection.

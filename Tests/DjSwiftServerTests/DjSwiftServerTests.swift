@@ -4,6 +4,39 @@ import Hummingbird
 import HummingbirdTesting
 import Testing
 
+@Test func `bundled authored catalog loads and projects current schedule`() throws {
+    let catalog = try AuthoredCatalogLoader.loadBundledCatalog()
+    let radioCatalog = try catalog.radioCatalog()
+    let schedule = radioCatalog.currentSchedule()
+
+    #expect(catalog.station.id == "dj-radio")
+    #expect(catalog.currentPublicationID == "schedule-2026-04-24-friday-signal")
+    #expect(schedule.segments.map(\.id) == ["seg-0001", "seg-0002", "seg-0003"])
+    #expect(radioCatalog.show("show-friday-signal")?.host == "Gale")
+}
+
+@Test func `authored catalog validation names missing segment track reference`() throws {
+    var catalog = try AuthoredCatalogLoader.loadBundledCatalog()
+    catalog.publications[0].segments[1].trackID = "missing-track"
+
+    let error = try #require(validationError(from: catalog))
+
+    #expect(error.description.contains("ScheduleSegmentRecord 'seg-0002' field 'trackID'"))
+    #expect(error.description.contains("Track ID 'missing-track' does not exist."))
+    #expect(error.description.contains("Add the track record or point this segment at an existing track."))
+}
+
+@Test func `authored catalog validation requires Apple Music storefront for catalog IDs`() throws {
+    var catalog = try AuthoredCatalogLoader.loadBundledCatalog()
+    catalog.tracks[0].providerReferences[0].storefront = nil
+
+    let error = try #require(validationError(from: catalog))
+
+    #expect(error.description.contains("ProviderReferenceRecord 'track-midnight-city:appleMusic' field 'storefront'"))
+    #expect(error.description.contains("Apple Music catalogID references must include the storefront"))
+    #expect(error.description.contains("Set storefront to an ISO 3166 alpha-2 storefront such as us."))
+}
+
 @Test func `root route returns startup message`() async throws {
     let app = Application(responder: makeRouter().buildResponder())
 
@@ -212,6 +245,25 @@ private func decode<Value: Decodable>(_ type: Value.Type, from response: TestRes
     let decoder = JSONDecoder()
     decoder.dateDecodingStrategy = .iso8601
     return try decoder.decode(type, from: data)
+}
+
+private func validationError(from catalog: AuthoredCatalog) -> CatalogValidationError? {
+    do {
+        try catalog.validate()
+        return nil
+    } catch let error as CatalogValidationError {
+        return error
+    } catch {
+        return CatalogValidationError(issues: [
+            CatalogValidationIssue(
+                recordType: "Test",
+                recordID: "unexpected-error",
+                field: "catalog",
+                message: "Expected CatalogValidationError but received \(error).",
+                likelyFix: "Update the test to catch the concrete validation error type.",
+            ),
+        ])
+    }
 }
 
 private extension Date {

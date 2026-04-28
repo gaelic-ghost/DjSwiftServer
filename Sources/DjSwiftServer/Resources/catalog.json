@@ -1,0 +1,162 @@
+{
+  "station": {
+    "id": "dj-radio",
+    "name": "DJ Radio",
+    "tagline": "Scheduled music and voice breaks, played from the listener's account.",
+    "artworkURL": "https://dj.example.invalid/artwork/station.png",
+    "defaultTimezone": "America/New_York",
+    "supportedProviders": [
+      "appleMusic",
+      "spotify"
+    ],
+    "playbackPolicy": {
+      "scheduleLookaheadSeconds": 7200,
+      "prefetchBreakCount": 3,
+      "clockDriftToleranceSeconds": 2,
+      "clientPollIntervalSeconds": 45
+    },
+    "links": {
+      "scheduleCurrent": "/v1/schedule/current",
+      "scheduleWindow": "/v1/schedule",
+      "health": "/v1/health"
+    }
+  },
+  "hosts": [
+    {
+      "id": "host-gale",
+      "displayName": "Gale",
+      "summary": "Host and station operator.",
+      "avatarURL": "https://dj.example.invalid/artwork/hosts/gale.png",
+      "links": []
+    }
+  ],
+  "shows": [
+    {
+      "id": "show-friday-signal",
+      "title": "Friday Signal",
+      "hostIDs": [
+        "host-gale"
+      ],
+      "summary": "A first scheduled block for testing synchronized music and voice breaks.",
+      "artworkURL": "https://dj.example.invalid/artwork/friday-signal.png",
+      "defaultDurationSeconds": 7200,
+      "tags": [
+        "test-schedule"
+      ]
+    }
+  ],
+  "tracks": [
+    {
+      "id": "track-midnight-city",
+      "title": "Midnight City",
+      "artistName": "M83",
+      "albumTitle": "Hurry Up, We're Dreaming",
+      "durationSeconds": 214,
+      "isExplicit": false,
+      "isrc": "FRS631100012",
+      "metadataSource": "manual",
+      "updatedAt": "2026-04-24T16:00:00Z",
+      "providerReferences": [
+        {
+          "provider": "appleMusic",
+          "catalogID": "666284200",
+          "storefront": "us",
+          "isrc": "FRS631100012",
+          "uri": null,
+          "availability": "resolved",
+          "lastResolvedAt": "2026-04-24T16:00:00Z",
+          "resolutionSource": "manual"
+        },
+        {
+          "provider": "spotify",
+          "catalogID": null,
+          "storefront": null,
+          "isrc": "FRS631100012",
+          "uri": null,
+          "availability": "needsStorefrontResolution",
+          "lastResolvedAt": null,
+          "resolutionSource": "manual"
+        }
+      ]
+    }
+  ],
+  "voiceBreaks": [
+    {
+      "id": "break-friday-signal-intro",
+      "title": "Friday Signal Intro",
+      "audioURL": "https://dj.example.invalid/audio/breaks/friday-signal-intro.m4a",
+      "mimeType": "audio/mp4",
+      "durationSeconds": 22,
+      "checksum": "sha256:sample-intro-break",
+      "loudnessLUFS": -16,
+      "transcript": "You are tuned to Friday Signal.",
+      "provenance": "recorded",
+      "showID": "show-friday-signal",
+      "createdAt": "2026-04-24T16:00:00Z",
+      "updatedAt": "2026-04-24T16:00:00Z"
+    },
+    {
+      "id": "break-friday-signal-reset",
+      "title": "Friday Signal Reset",
+      "audioURL": "https://dj.example.invalid/audio/breaks/friday-signal-reset.m4a",
+      "mimeType": "audio/mp4",
+      "durationSeconds": 18,
+      "checksum": "sha256:sample-reset-break",
+      "loudnessLUFS": -16,
+      "transcript": "A quick reset before the next track.",
+      "provenance": "aiGenerated",
+      "showID": "show-friday-signal",
+      "createdAt": "2026-04-24T16:00:00Z",
+      "updatedAt": "2026-04-24T16:00:00Z"
+    }
+  ],
+  "publications": [
+    {
+      "id": "schedule-2026-04-24-friday-signal",
+      "revision": "2026-04-24T16:00:00Z-sample",
+      "generatedAt": "2026-04-24T16:00:00Z",
+      "validFrom": "2026-04-24T16:00:00Z",
+      "validUntil": "2026-04-24T18:00:00Z",
+      "source": "manual",
+      "segments": [
+        {
+          "id": "seg-0001",
+          "sequence": 1,
+          "kind": "showIntro",
+          "startsAt": "2026-04-24T16:00:00Z",
+          "durationSeconds": 22,
+          "driftPolicy": "anchorToWallClock",
+          "showID": "show-friday-signal",
+          "trackID": null,
+          "voiceBreakID": "break-friday-signal-intro",
+          "notes": null
+        },
+        {
+          "id": "seg-0002",
+          "sequence": 2,
+          "kind": "track",
+          "startsAt": "2026-04-24T16:00:22Z",
+          "durationSeconds": 214,
+          "driftPolicy": "preserveRelativeOffset",
+          "showID": "show-friday-signal",
+          "trackID": "track-midnight-city",
+          "voiceBreakID": null,
+          "notes": null
+        },
+        {
+          "id": "seg-0003",
+          "sequence": 3,
+          "kind": "voiceBreak",
+          "startsAt": "2026-04-24T16:03:56Z",
+          "durationSeconds": 18,
+          "driftPolicy": "skipIfLate",
+          "showID": "show-friday-signal",
+          "trackID": null,
+          "voiceBreakID": "break-friday-signal-reset",
+          "notes": null
+        }
+      ]
+    }
+  ],
+  "currentPublicationID": "schedule-2026-04-24-friday-signal"
+}
