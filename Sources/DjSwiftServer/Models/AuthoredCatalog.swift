@@ -130,27 +130,6 @@ struct CatalogValidationError: Error, CustomStringConvertible, Equatable {
 }
 
 enum AuthoredCatalogLoader {
-    static let bundledResourceName = "catalog"
-    static let bundledResourceExtension = "json"
-
-    static func loadBundledCatalog() throws -> AuthoredCatalog {
-        guard let url = Bundle.module.url(
-            forResource: bundledResourceName,
-            withExtension: bundledResourceExtension,
-        ) else {
-            throw CatalogValidationIssue(
-                recordType: "Bundle",
-                recordID: "DjSwiftServer",
-                field: "Resources/catalog.json",
-                message: "The bundled authored catalog resource was not found.",
-                likelyFix: "Declare the Resources directory in Package.swift and include catalog.json under Sources/DjSwiftServer/Resources.",
-            )
-        }
-
-        let data = try Data(contentsOf: url)
-        return try load(data: data)
-    }
-
     static func load(data: Data) throws -> AuthoredCatalog {
         let decoder = JSONDecoder()
         decoder.dateDecodingStrategy = .iso8601

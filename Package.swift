@@ -19,13 +19,13 @@ let package = Package(
             dependencies: [
                 .product(name: "Hummingbird", package: "hummingbird"),
             ],
-            resources: [
-                .process("Resources"),
-            ],
         ),
         .testTarget(
             name: "DjSwiftServerTests",
             dependencies: ["DjSwiftServer", .product(name: "HummingbirdTesting", package: "hummingbird")],
+            resources: [
+                .process("Resources"),
+            ],
         ),
     ],
     swiftLanguageModes: [.v6],
