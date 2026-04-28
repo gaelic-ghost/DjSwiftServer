@@ -284,6 +284,8 @@ These errors should name the record type, record ID, field, and likely fix.
 
 ### Phase 1: Authored Catalog Resource
 
+Status: Implemented for the bundled local catalog.
+
 - Add a bundled JSON catalog resource under the executable target.
 - Add source-of-truth record types separate from public response types.
 - Load and validate the bundled catalog at startup.
@@ -291,6 +293,8 @@ These errors should name the record type, record ID, field, and likely fix.
 - Add tests for successful load and invalid fixture errors.
 
 ### Phase 2: Projection Layer
+
+Status: Implemented for the current public listener API contract.
 
 - Move public response construction out of `RadioCatalog.sample`.
 - Add explicit projection functions from records to response models.
@@ -311,9 +315,9 @@ These errors should name the record type, record ID, field, and likely fix.
 
 ## Current Completeness
 
-The public listener response model is complete enough for the current read-only API. The product data model is not complete until the source-of-truth authored catalog, validation rules, and projection layer exist.
+The public listener response model is complete enough for the current read-only API. The bundled source-of-truth catalog, validation rules, and projection layer now exist for local development. The broader product data model is still incomplete until import, provider reconciliation, admin publishing, and storage decisions are made.
 
-The next implementation branch should start with Phase 1, because it removes hard-coded sample data without committing to persistent storage or admin APIs.
+The next implementation branch should start Phase 3 by deciding whether Apple Music catalog lookup is a manual tool, a CLI command, or a server-side admin job. Keep listener account authorization out of the server.
 
 ## References
 

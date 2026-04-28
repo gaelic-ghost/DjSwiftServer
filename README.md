@@ -17,7 +17,7 @@ Swift Hummingbird server package for the DJ workspace.
 
 ### Status
 
-This project is just starting out with a validated Hummingbird server baseline.
+This project has a validated Hummingbird server baseline and a bundled authored catalog that projects into the current read-only listener API.
 
 ### What This Project Is
 
@@ -69,7 +69,7 @@ swift package resolve
 
 ### Workflow
 
-Keep server behavior in `Sources/DjSwiftServer/`, and keep route coverage in `Tests/DjSwiftServerTests/`. Prefer `swift package` commands for dependency and target changes when SwiftPM provides one.
+Keep server behavior in `Sources/DjSwiftServer/`, bundled catalog data in `Sources/DjSwiftServer/Resources/catalog.json`, and route coverage in `Tests/DjSwiftServerTests/`. Prefer `swift package` commands for dependency and target changes when SwiftPM provides one.
 
 ### Validation
 
