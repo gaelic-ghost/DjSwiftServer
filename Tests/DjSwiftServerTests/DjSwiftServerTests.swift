@@ -4,19 +4,19 @@ import Hummingbird
 import HummingbirdTesting
 import Testing
 
-@Test func `bundled authored catalog loads and projects current schedule`() throws {
-    let catalog = try AuthoredCatalogLoader.loadBundledCatalog()
+@Test func `authored catalog fixture loads and projects current schedule`() throws {
+    let catalog = try loadCatalogFixture()
     let radioCatalog = try catalog.radioCatalog()
-    let schedule = radioCatalog.currentSchedule()
+    let schedule = try radioCatalog.currentSchedule()
 
     #expect(catalog.station.id == "dj-radio")
     #expect(catalog.currentPublicationID == "schedule-2026-04-24-friday-signal")
     #expect(schedule.segments.map(\.id) == ["seg-0001", "seg-0002", "seg-0003"])
-    #expect(radioCatalog.show("show-friday-signal")?.host == "Gale")
+    #expect(try radioCatalog.show("show-friday-signal")?.host == "Gale")
 }
 
 @Test func `authored catalog validation names missing segment track reference`() throws {
-    var catalog = try AuthoredCatalogLoader.loadBundledCatalog()
+    var catalog = try loadCatalogFixture()
     catalog.publications[0].segments[1].trackID = "missing-track"
 
     let error = try #require(validationError(from: catalog))
@@ -27,7 +27,7 @@ import Testing
 }
 
 @Test func `authored catalog validation requires Apple Music storefront for catalog IDs`() throws {
-    var catalog = try AuthoredCatalogLoader.loadBundledCatalog()
+    var catalog = try loadCatalogFixture()
     catalog.tracks[0].providerReferences[0].storefront = nil
 
     let error = try #require(validationError(from: catalog))
@@ -59,7 +59,7 @@ import Testing
 }
 
 @Test func `public health route returns JSON contract`() async throws {
-    let app = Application(responder: makeRouter().buildResponder())
+    let app = try testApplication()
 
     try await app.test(.router) { client in
         try await client.execute(uri: "/v1/health", method: .get) { response in
@@ -73,7 +73,7 @@ import Testing
 }
 
 @Test func `manifest route returns station and polling guidance`() async throws {
-    let app = Application(responder: makeRouter().buildResponder())
+    let app = try testApplication()
 
     try await app.test(.router) { client in
         try await client.execute(uri: "/v1/manifest", method: .get) { response in
@@ -90,7 +90,7 @@ import Testing
 }
 
 @Test func `current schedule route returns ordered segments`() async throws {
-    let app = Application(responder: makeRouter().buildResponder())
+    let app = try testApplication()
 
     try await app.test(.router) { client in
         try await client.execute(uri: "/v1/schedule/current", method: .get) { response in
@@ -107,7 +107,7 @@ import Testing
 }
 
 @Test func `current schedule route exposes Apple Music storefront and ISRC fallback references`() async throws {
-    let app = Application(responder: makeRouter().buildResponder())
+    let app = try testApplication()
 
     try await app.test(.router) { client in
         try await client.execute(uri: "/v1/schedule/current", method: .get) { response in
@@ -129,7 +129,7 @@ import Testing
 }
 
 @Test func `schedule window route returns overlapping segments`() async throws {
-    let app = Application(responder: makeRouter().buildResponder())
+    let app = try testApplication()
 
     try await app.test(.router) { client in
         try await client.execute(uri: "/v1/schedule?from=2026-04-24T16:03:30Z&to=2026-04-24T16:04:05Z", method: .get) { response in
@@ -144,7 +144,7 @@ import Testing
 }
 
 @Test func `schedule window route returns empty segment list for valid empty window`() async throws {
-    let app = Application(responder: makeRouter().buildResponder())
+    let app = try testApplication()
 
     try await app.test(.router) { client in
         try await client.execute(uri: "/v1/schedule?from=2026-04-24T17:30:00Z&to=2026-04-24T17:45:00Z", method: .get) { response in
@@ -157,7 +157,7 @@ import Testing
 }
 
 @Test func `schedule window route rejects missing query values`() async throws {
-    let app = Application(responder: makeRouter().buildResponder())
+    let app = try testApplication()
 
     try await app.test(.router) { client in
         try await client.execute(uri: "/v1/schedule?from=2026-04-24T16:00:00Z", method: .get) { response in
@@ -168,7 +168,7 @@ import Testing
 }
 
 @Test func `schedule window route rejects malformed query values`() async throws {
-    let app = Application(responder: makeRouter().buildResponder())
+    let app = try testApplication()
 
     try await app.test(.router) { client in
         try await client.execute(uri: "/v1/schedule?from=tomorrow&to=2026-04-24T16:00:00Z", method: .get) { response in
@@ -179,7 +179,7 @@ import Testing
 }
 
 @Test func `schedule window route rejects inverted ranges`() async throws {
-    let app = Application(responder: makeRouter().buildResponder())
+    let app = try testApplication()
 
     try await app.test(.router) { client in
         try await client.execute(uri: "/v1/schedule?from=2026-04-24T18:00:00Z&to=2026-04-24T16:00:00Z", method: .get) { response in
@@ -190,7 +190,7 @@ import Testing
 }
 
 @Test func `show route returns known show metadata`() async throws {
-    let app = Application(responder: makeRouter().buildResponder())
+    let app = try testApplication()
 
     try await app.test(.router) { client in
         try await client.execute(uri: "/v1/shows/show-friday-signal", method: .get) { response in
@@ -204,7 +204,7 @@ import Testing
 }
 
 @Test func `voice break route returns known break metadata`() async throws {
-    let app = Application(responder: makeRouter().buildResponder())
+    let app = try testApplication()
 
     try await app.test(.router) { client in
         try await client.execute(uri: "/v1/breaks/break-friday-signal-intro", method: .get) { response in
@@ -218,7 +218,7 @@ import Testing
 }
 
 @Test func `unknown show returns not found`() async throws {
-    let app = Application(responder: makeRouter().buildResponder())
+    let app = try testApplication()
 
     try await app.test(.router) { client in
         try await client.execute(uri: "/v1/shows/missing-show", method: .get) { response in
@@ -229,7 +229,7 @@ import Testing
 }
 
 @Test func `unknown voice break returns not found`() async throws {
-    let app = Application(responder: makeRouter().buildResponder())
+    let app = try testApplication()
 
     try await app.test(.router) { client in
         try await client.execute(uri: "/v1/breaks/missing-break", method: .get) { response in
@@ -245,6 +245,24 @@ private func decode<Value: Decodable>(_ type: Value.Type, from response: TestRes
     let decoder = JSONDecoder()
     decoder.dateDecodingStrategy = .iso8601
     return try decoder.decode(type, from: data)
+}
+
+private func testApplication() throws -> Application<RouterResponder<BasicRequestContext>> {
+    try Application(responder: makeRouter(catalog: loadCatalogFixture().radioCatalog()).buildResponder())
+}
+
+private func loadCatalogFixture() throws -> AuthoredCatalog {
+    guard let url = Bundle.module.url(forResource: "catalog", withExtension: "json") else {
+        throw CatalogValidationIssue(
+            recordType: "TestFixture",
+            recordID: "catalog",
+            field: "Tests/DjSwiftServerTests/Resources/catalog.json",
+            message: "The authored catalog JSON test fixture was not found in the test bundle.",
+            likelyFix: "Keep catalog.json under Tests/DjSwiftServerTests/Resources and declare that directory as a testTarget resource in Package.swift.",
+        )
+    }
+
+    return try AuthoredCatalogLoader.load(data: Data(contentsOf: url))
 }
 
 private func validationError(from catalog: AuthoredCatalog) -> CatalogValidationError? {

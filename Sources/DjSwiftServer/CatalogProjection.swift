@@ -1,11 +1,5 @@
 import Foundation
 
-extension RadioCatalog {
-    static func bundled() throws -> Self {
-        try AuthoredCatalogLoader.loadBundledCatalog().radioCatalog()
-    }
-}
-
 extension AuthoredCatalog {
     func radioCatalog() throws -> RadioCatalog {
         try validate()

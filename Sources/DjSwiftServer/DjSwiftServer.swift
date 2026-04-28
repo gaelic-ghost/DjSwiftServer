@@ -3,6 +3,6 @@ import Hummingbird
 @main
 struct DjSwiftServerApp {
     static func main() async throws {
-        try await makeApplication(catalog: .bundled()).runService()
+        try await makeApplication().runService()
     }
 }

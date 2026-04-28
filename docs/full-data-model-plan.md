@@ -282,13 +282,13 @@ These errors should name the record type, record ID, field, and likely fix.
 
 ## Implementation Phases
 
-### Phase 1: Authored Catalog Resource
+### Phase 1: Authored Catalog Records
 
-Status: Implemented for the bundled local catalog.
+Status: Implemented for test fixtures and projection validation only. Runtime storage is still undecided.
 
-- Add a bundled JSON catalog resource under the executable target.
+- Add a JSON catalog fixture under the test target.
 - Add source-of-truth record types separate from public response types.
-- Load and validate the bundled catalog at startup.
+- Load and validate fixture catalog data in tests.
 - Keep public routes unchanged.
 - Add tests for successful load and invalid fixture errors.
 
@@ -296,7 +296,7 @@ Status: Implemented for the bundled local catalog.
 
 Status: Implemented for the current public listener API contract.
 
-- Move public response construction out of `RadioCatalog.sample`.
+- Move public response construction out of route tests and into explicit projection functions.
 - Add explicit projection functions from records to response models.
 - Keep the public JSON contract stable.
 - Add tests for projection behavior and schedule-window filtering.
@@ -315,7 +315,7 @@ Status: Implemented for the current public listener API contract.
 
 ## Current Completeness
 
-The public listener response model is complete enough for the current read-only API. The bundled source-of-truth catalog, validation rules, and projection layer now exist for local development. The broader product data model is still incomplete until import, provider reconciliation, admin publishing, and storage decisions are made.
+The public listener response model is complete enough for the current read-only API. Source-of-truth catalog record types, validation rules, and projection functions now exist, and JSON is used only as a test fixture. The broader product data model is still incomplete until import, provider reconciliation, admin publishing, and storage decisions are made.
 
 The next implementation branch should start Phase 3 by deciding whether Apple Music catalog lookup is a manual tool, a CLI command, or a server-side admin job. Keep listener account authorization out of the server.
 

@@ -3,25 +3,25 @@ import Hummingbird
 
 func registerPublicRoutes(on router: Router<BasicRequestContext>, catalog: RadioCatalog) {
     router.get("/v1/health") { _, _ -> HealthResponse in
-        catalog.health()
+        try catalog.health()
     }
 
     router.get("/v1/manifest") { _, _ -> StationManifest in
-        catalog.manifest()
+        try catalog.manifest()
     }
 
     router.get("/v1/schedule/current") { _, _ -> ScheduleResponse in
-        catalog.currentSchedule()
+        try catalog.currentSchedule()
     }
 
     router.get("/v1/schedule") { request, _ -> ScheduleResponse in
         let window = try ScheduleWindow(request: request)
-        return catalog.schedule(window)
+        return try catalog.schedule(window)
     }
 
     router.get("/v1/shows/:showID") { _, context -> ShowMetadata in
         let showID = try context.parameters.require("showID")
-        guard let show = catalog.show(showID) else {
+        guard let show = try catalog.show(showID) else {
             throw HTTPError(.notFound, message: "No show metadata exists for show ID '\(showID)'.")
         }
 
@@ -30,7 +30,7 @@ func registerPublicRoutes(on router: Router<BasicRequestContext>, catalog: Radio
 
     router.get("/v1/breaks/:breakID") { _, context -> VoiceBreakDetail in
         let breakID = try context.parameters.require("breakID")
-        guard let voiceBreak = catalog.voiceBreak(breakID) else {
+        guard let voiceBreak = try catalog.voiceBreak(breakID) else {
             throw HTTPError(.notFound, message: "No voice break metadata exists for break ID '\(breakID)'.")
         }
 

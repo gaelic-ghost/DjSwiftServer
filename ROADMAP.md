@@ -117,7 +117,7 @@ Completed
 
 ### Scope
 
-- [x] Move hard-coded sample data into a bundled authored catalog resource.
+- [x] Move route tests onto an authored catalog fixture without making that fixture a runtime data source.
 - [x] Add source-of-truth record types that are separate from public response models.
 - [x] Add validation for catalog IDs, references, schedule windows, segment timing, provider references, and voice-break media metadata.
 - [x] Add explicit projection from authored records to listener API responses.
@@ -125,14 +125,14 @@ Completed
 ### Tickets
 
 - [x] Add `docs/full-data-model-plan.md`.
-- [x] Add a bundled catalog fixture.
+- [x] Add a JSON catalog fixture under the test target.
 - [x] Add catalog record types and loader.
 - [x] Add validation errors that name the record type, record ID, field, and likely fix.
 - [x] Add projection tests from catalog records to public responses.
 
 ### Exit Criteria
 
-- [x] `RadioCatalog` loads from an authored resource instead of constructing sample data directly in Swift.
+- [x] Route tests load from authored records instead of constructing response data directly in Swift.
 - [x] Invalid catalog fixtures fail with descriptive operator-facing errors.
 - [x] Public route behavior remains covered by Swift Testing tests.
 - [x] README, roadmap, and planning docs clearly distinguish source-of-truth records from public response models.
@@ -151,4 +151,4 @@ Completed
 - 2026-04-24: Captured the initial internet-radio data model and public API plan.
 - 2026-04-24: Started provider-resolution scope with manual provider references, Apple Music storefront data, and ISRC fallback coverage.
 - 2026-04-28: Planned the full authored catalog, validation, and projection model.
-- 2026-04-28: Added a bundled authored catalog resource, validation, and explicit public response projection.
+- 2026-04-28: Added authored catalog records, validation, explicit public response projection, and a JSON fixture scoped to tests only.
