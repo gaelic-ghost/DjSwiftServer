@@ -99,6 +99,7 @@ scripts/repo-maintenance/validate-all.sh
 ## Planning Docs
 
 - [Initial Data Model and API Plan](docs/initial-data-model-and-api-plan.md)
+- [Full Data Model Plan](docs/full-data-model-plan.md)
 
 ## Release Notes
 
